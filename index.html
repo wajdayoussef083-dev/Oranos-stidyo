@@ -1,76 +1,419 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oranos Stidyo - سينما أورانوس</title>
-    <link rel="manifest" href="manifest.json">
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #0f172a;
-            color: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        header h1 {
-            font-size: 2rem;
-            color: #38bdf8;
-        }
-        header p {
-            color: #94a3b8;
-            font-size: 1rem;
-        }
-        .video-container {
-            width: 90%;
-            max-width: 600px;
-            background: #1e293b;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-        video {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        footer {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: #64748b;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oranos Studio — Cinematic Long-Video Beast</title>
+  <style>
+    :root {
+      --bg: #070a11;
+      --surface: #0f1626;
+      --surface-2: #162036;
+      --border: #24324d;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --gold: #f59e0b;
+      --cyan: #06b6d4;
+      --violet: #8b5cf6;
+      --green: #10b981;
+    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body {
+      margin: 0; padding: 14px;
+      background: radial-gradient(circle at top, #111b33, var(--bg) 60%);
+      color: var(--text);
+    }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+      background: rgba(15, 22, 38, 0.92); border: 1px solid var(--border);
+      padding: 14px 18px; border-radius: 16px; margin-bottom: 14px;
+    }
+    .brand { font-size: 18px; font-weight: 800; letter-spacing: 0.3px; }
+    .brand span { color: var(--gold); }
+    .pill {
+      background: rgba(139, 92, 246, 0.18); border: 1px solid rgba(139, 92, 246, 0.45);
+      color: #ddd6fe; padding: 4px 10px; border-radius: 999px; font-size: 12px;
+    }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+    @media (min-width: 820px) {
+      .grid-2 { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 14px; }
+    }
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 16px;
+    }
+    .card h3 { margin: 0 0 12px; font-size: 15px; color: #e2e8f0; }
+    label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+    input, textarea, select {
+      width: 100%; background: #090e1a; color: var(--text);
+      border: 1px solid var(--border); border-radius: 10px;
+      padding: 10px 12px; font-size: 14px; margin-bottom: 12px;
+    }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    button {
+      border: none; border-radius: 11px; padding: 11px 14px;
+      font-weight: 700; font-size: 13px; cursor: pointer; color: #fff;
+      background: linear-gradient(135deg, var(--violet), #4f46e5);
+    }
+    button.gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #111827; }
+    button.cyan { background: linear-gradient(135deg, #06b6d4, #0284c7); }
+    button.green { background: linear-gradient(135deg, #10b981, #059669); }
+    button.dark { background: var(--surface-2); border: 1px solid var(--border); }
+    button:disabled { opacity: 0.45; cursor: not-allowed; }
+    .audio-box {
+      background: #090e1a; border: 1px dashed var(--border);
+      border-radius: 12px; padding: 12px; margin-bottom: 12px;
+    }
+    audio { width: 100%; margin-top: 8px; }
+    .scenes { display: grid; gap: 10px; max-height: 440px; overflow-y: auto; padding-left: 4px; }
+    .scene {
+      background: #090e1a; border: 1px solid var(--border);
+      border-radius: 12px; padding: 10px 12px;
+    }
+    .scene-head {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; margin-bottom: 6px;
+    }
+    .tag {
+      padding: 2px 8px; border-radius: 999px; font-size: 11px;
+      background: rgba(6, 182, 212, 0.16); color: #67e8f9;
+    }
+    canvas {
+      width: 100%; aspect-ratio: 16 / 9; background: #000;
+      border-radius: 14px; border: 1px solid var(--border); display: block;
+    }
+    .status-bar {
+      margin-top: 10px; font-size: 12px; color: var(--muted);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+  </style>
 </head>
 <body>
-
-    <div class="video-container">
-        <header>
-            <h1>🎬 Oranos Stidyo</h1>
-            <p>منصة العرض السينمائي الخاصة بك</p>
-        </header>
-
-        <video controls>
-            <source src="video.mp4" type="video/mp4">
-            متصفحك لا يدعم تشغيل فيديو HTML5.
-        </video>
-
-        <footer>
-            Oranos Dev &copy; 2026 تم التطوير بواسطة
-        </footer>
+  <div class="wrap">
+    <div class="topbar">
+      <div>
+        <div class="brand">ORANOS <span>STUDIO</span> — CINEMA BEAST</div>
+        <div style="font-size:12px;color:var(--muted)">محرك القصائد الصوتية + المشاهد السينمائية الطويلة</div>
+      </div>
+      <span class="pill">Voice + Poetry + Long Cinema</span>
     </div>
 
+    <div class="grid grid-2">
+      <!-- العمود الأيمن: الصوت، القصيدة، والإعدادات -->
+      <div class="card">
+        <h3>1. الصوت الشعري والنص</h3>
+
+        <div class="audio-box">
+          <label>إدخال صوتي (رفع ملف MP3/WAV أو تسجيل إلقاء مباشر)</label>
+          <input type="file" id="audioFile" accept="audio/*" />
+          <div class="btn-row">
+            <button id="recordBtn" class="cyan">تسجيل صوتي مباشر</button>
+            <button id="stopRecBtn" class="dark" disabled>إيقاف التسجيل</button>
+          </div>
+          <audio id="audioPlayer" controls></audio>
+        </div>
+
+        <label>أبيات الشعر أو النص السردي (كل سطر أو بيت يتحول لمشهد متزامن)</label>
+        <textarea id="poemInput" rows="6" placeholder="اكتب أبيات الشعر هنا، سطر في كل سطر...
+مثال:
+على ضفاف الليل يعزف القلب لحن الحنين
+وفي العين حلم يضيء دروب السائرين
+نرسم بالصوت صورة تحكي قصة السنين"></textarea>
+
+        <div class="row">
+          <div>
+            <label>المود السينمائي</label>
+            <select id="cinemaMood">
+              <option value="noir">سينمائي ليلي دافئ (Gold & Shadow)</option>
+              <option value="ocean">أطلسي شاعري (Deep Ocean & Mist)</option>
+              <option value="desert">صحراوي ملحمي (Amber Dunes & Sun)</option>
+              <option value="cyber">مستقبلي حالم (Neon & Rain)</option>
+            </select>
+          </div>
+          <div>
+            <label>مدة المشهد الافتراضية (ثانية)</label>
+            <input type="number" id="fallbackSec" value="6" min="3" max="20" />
+          </div>
+        </div>
+
+        <label>قفل الهوية البصرية (Style Lock ثابت عبر كل الفيديو)</label>
+        <input id="styleLock" value="35mm anamorphic cinema, slow dolly camera, volumetric light, rich grain" />
+
+        <button id="buildScenesBtn" class="gold">بناء الخط الزمني للمشاهد المتزامنة</button>
+      </div>
+
+      <!-- العمود الأيسر: المعاينة السينمائية والتصدير -->
+      <div class="card">
+        <h3>2. شاشة العرض السينمائي والتصدير</h3>
+        <canvas id="cinemaCanvas" width="1280" height="720"></canvas>
+        <div class="status-bar">
+          <span id="timeReadout">00:00 / 00:00</span>
+          <span id="sceneReadout">المشهد: —</span>
+        </div>
+
+        <div class="btn-row" style="margin-top:12px;">
+          <button id="playCinemaBtn" class="green">تشغيل الفيديو الكامل</button>
+          <button id="exportVideoBtn" class="cyan">تصدير ملف فيديو (WebM)</button>
+        </div>
+
+        <div style="margin-top:14px;">
+          <label>قائمة المشاهد المولدة تلقائياً (قابلة للتعديل)</label>
+          <div class="scenes" id="sceneList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const audioFileEl = document.getElementById('audioFile');
+    const recordBtn = document.getElementById('recordBtn');
+    const stopRecBtn = document.getElementById('stopRecBtn');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const poemInput = document.getElementById('poemInput');
+    const cinemaMood = document.getElementById('cinemaMood');
+    const fallbackSec = document.getElementById('fallbackSec');
+    const styleLock = document.getElementById('styleLock');
+    const buildScenesBtn = document.getElementById('buildScenesBtn');
+    const sceneList = document.getElementById('sceneList');
+    const canvas = document.getElementById('cinemaCanvas');
+    const ctx = canvas.getContext('2d');
+    const playCinemaBtn = document.getElementById('playCinemaBtn');
+    const exportVideoBtn = document.getElementById('exportVideoBtn');
+    const timeReadout = document.getElementById('timeReadout');
+    const sceneReadout = document.getElementById('sceneReadout');
+
+    let scenes = [];
+    let mediaRecorder = null;
+    let recordedChunks = [];
+    let animFrameId = null;
+
+    // 1. رفع ملف صوتي
+    audioFileEl.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      audioPlayer.src = URL.createObjectURL(file);
+    });
+
+    // 2. تسجيل صوتي مباشر من الميكروفون
+    recordBtn.addEventListener('click', async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recordedChunks = [];
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) recordedChunks.push(e.data);
+        };
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: 'audio/webm' });
+          audioPlayer.src = URL.createObjectURL(blob);
+          stream.getTracks().forEach(t => t.stop());
+        };
+        mediaRecorder.start();
+        recordBtn.disabled = true;
+        stopRecBtn.disabled = false;
+      } catch (err) {
+        alert('تعذر الوصول للميكروفون، يمكنك رفع ملف صوتي مباشرة.');
+      }
+    });
+
+    stopRecBtn.addEventListener('click', () => {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+      }
+      recordBtn.disabled = false;
+      stopRecBtn.disabled = true;
+    });
+
+    // 3. بناء المشاهد وتوزيع التوقيت حسب مدة الصوت أو عدد الأبيات
+    buildScenesBtn.addEventListener('click', () => {
+      const lines = poemInput.value
+        .split('\n')
+        .map(l => l.trim())
+        .filter(Boolean);
+
+      const verseLines = lines.length
+        ? lines
+        : ['صوت الشعر يوقظ الذاكرة', 'والمشهد السينمائي يروي الحكاية', 'إبداع أورانوس ستوديو بلا حدود'];
+
+      const totalAudioDur = (audioPlayer.duration && isFinite(audioPlayer.duration))
+        ? audioPlayer.duration
+        : verseLines.length * Number(fallbackSec.value || 6);
+
+      const perScene = totalAudioDur / verseLines.length;
+      let cursor = 0;
+
+      scenes = verseLines.map((verse, idx) => {
+        const start = cursor;
+        const end = cursor + perScene;
+        cursor = end;
+        return {
+          index: idx + 1,
+          verse,
+          start,
+          end,
+          duration: perScene,
+          prompt: `[${styleLock.value}] Verse ${idx + 1}: "${verse}" | Mood: ${cinemaMood.value}`
+        };
+      });
+
+      renderSceneList();
+      drawCinemaFrame(scenes[0], 0, 0);
+    });
+
+    function renderSceneList() {
+      sceneList.innerHTML = scenes.map((s, i) => `
+        <div class="scene">
+          <div class="scene-head">
+            <strong>مشهد #${s.index}</strong>
+            <span class="tag">${s.start.toFixed(1)}s → ${s.end.toFixed(1)}s</span>
+          </div>
+          <input value="${escapeAttr(s.verse)}" onchange="editVerse(${i}, this.value)" />
+          <div style="font-size:11px;color:#94a3b8;direction:ltr;text-align:left;">${escapeAttr(s.prompt)}</div>
+        </div>
+      `).join('');
+    }
+
+    window.editVerse = (i, val) => {
+      scenes[i].verse = val;
+      scenes[i].prompt = `[${styleLock.value}] Verse ${i + 1}: "${val}" | Mood: ${cinemaMood.value}`;
+    };
+
+    // 4. رسم المشهد السينمائي على Canvas مع حركة كاميرا وإضاءة متغيرة
+    function getMoodPalette(mood) {
+      if (mood === 'ocean') return ['#041c2c', '#0b4f6c', '#145da0'];
+      if (mood === 'desert') return ['#2b1408', '#7c2d12', '#d97706'];
+      if (mood === 'cyber') return ['#09071c', '#2e1065', '#0891b2'];
+      return ['#17110c', '#451a03', '#b45309'];
+    }
+
+    function drawCinemaFrame(scene, localProgress, globalTime) {
+      if (!scene) return;
+      const [c1, c2, c3] = getMoodPalette(cinemaMood.value);
+
+      // حركة كاميرا بطيئة (Slow Zoom & Pan)
+      const zoom = 1 + Math.sin(localProgress * Math.PI) * 0.08;
+      const panX = Math.sin(globalTime * 0.35 + scene.index) * 40;
+
+      ctx.save();
+      ctx.translate(canvas.width / 2 + panX, canvas.height / 2);
+      ctx.scale(zoom, zoom);
+      ctx.translate(-canvas.width / 2, -canvas.height / 2);
+
+      const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      grad.addColorStop(0, c1);
+      grad.addColorStop(0.55, c2);
+      grad.addColorStop(1, c3);
+      ctx.fillStyle = grad;
+      ctx.fillRect(-100, -100, canvas.width + 200, canvas.height + 200);
+
+      // هالة إضاءة سينمائية متحركة
+      const orbX = canvas.width * (0.25 + 0.5 * ((Math.sin(globalTime * 0.5 + scene.index) + 1) / 2));
+      const orbY = canvas.height * 0.38;
+      const orb = ctx.createRadialGradient(orbX, orbY, 20, orbX, orbY, 360);
+      orb.addColorStop(0, 'rgba(255,255,255,0.22)');
+      orb.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = orb;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.restore();
+
+      // شريط سينمائي علوي وسفلي (Letterbox)
+      ctx.fillStyle = 'rgba(0,0,0,0.68)';
+      ctx.fillRect(0, 0, canvas.width, 72);
+      ctx.fillRect(0, canvas.height - 96, canvas.width, 96);
+
+      // شارة Oranos Studio
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = 'bold 20px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(`ORANOS CINEMA • مشهد ${scene.index}/${scenes.length}`, canvas.width - 44, 44);
+
+      // البيت الشعري / النص المتزامن مع الصوت
+      const alpha = Math.min(1, Math.sin(localProgress * Math.PI) * 1.6);
+      ctx.fillStyle = `rgba(248, 250, 252, ${Math.max(0.35, alpha)})`;
+      ctx.font = 'bold 38px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(scene.verse, canvas.width / 2, canvas.height - 36);
+
+      // شريط التقدم الزمني
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(0, canvas.height - 6, canvas.width * localProgress, 6);
+
+      sceneReadout.textContent = `المشهد: ${scene.index}/${scenes.length}`;
+    }
+
+    // 5. تشغيل الفيديو الطويل المتزامن مع الصوت
+    playCinemaBtn.addEventListener('click', () => {
+      if (!scenes.length) buildScenesBtn.click();
+      cancelAnimationFrame(animFrameId);
+
+      const totalDuration = scenes[scenes.length - 1].end;
+      const startTime = performance.now();
+
+      if (audioPlayer.src) {
+        audioPlayer.currentTime = 0;
+        audioPlayer.play().catch(() => {});
+      }
+
+      function tick(now) {
+        const elapsed = (now - startTime) / 1000;
+        if (elapsed >= totalDuration) {
+          timeReadout.textContent = `${fmt(totalDuration)} / ${fmt(totalDuration)}`;
+          return;
+        }
+
+        const current = scenes.find(s => elapsed >= s.start && elapsed <= s.end) || scenes[scenes.length - 1];
+        const localP = Math.min(1, Math.max(0, (elapsed - current.start) / current.duration));
+
+        drawCinemaFrame(current, localP, elapsed);
+        timeReadout.textContent = `${fmt(elapsed)} / ${fmt(totalDuration)}`;
+        animFrameId = requestAnimationFrame(tick);
+      }
+
+      animFrameId = requestAnimationFrame(tick);
+    });
+
+    // 6. تصدير الفيديو الكامل كملف WebM قابل للتحميل
+    exportVideoBtn.addEventListener('click', () => {
+      if (!scenes.length) buildScenesBtn.click();
+      const stream = canvas.captureStream(30);
+      const recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+      const chunks = [];
+
+      recorder.ondataavailable = (e) => {
+        if (e.data.size > 0) chunks.push(e.data);
+      };
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'oranos-cinema-long.webm';
+        a.click();
+      };
+
+      recorder.start();
+      playCinemaBtn.click();
+
+      const totalMs = scenes[scenes.length - 1].end * 1000 + 300;
+      setTimeout(() => {
+        if (recorder.state !== 'inactive') recorder.stop();
+      }, totalMs);
+    });
+
+    function fmt(sec) {
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(Math.floor(sec % 60)).padStart(2, '0');
+      return `${m}:${s}`;
+    }
+
+    function escapeAttr(str) {
+      return str.replace(/[&<>"']/g, (m) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+  </script>
 </body>
 </html>
