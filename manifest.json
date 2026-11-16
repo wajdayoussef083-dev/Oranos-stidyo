@@ -1,8 +1,15 @@
 {
-  "name": "Oranos Stidyo",
+  "name": "Oranos Studio",
   "short_name": "Oranos",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#38bdf8"
+  "background_color": "#070a11",
+  "theme_color": "#0f1626",
+  "icons": [
+    {
+      "src": "./oranos_logo_17939...",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
