@@ -35,7 +35,6 @@
     }
     .wrap { max-width: 1060px; margin: 0 auto; }
 
-    /* هيبة الرأس */
     .topbar {
       display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap;
       background: linear-gradient(135deg, rgba(13, 20, 36, 0.96), rgba(20, 31, 54, 0.92));
@@ -55,7 +54,6 @@
       background: rgba(6, 182, 212, 0.14); border-color: rgba(6, 182, 212, 0.4); color: #a5f3fc;
     }
 
-    /* التبويبات */
     .tabs {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px;
     }
@@ -110,7 +108,6 @@
     button.dark { background: var(--surface-2); border: 1px solid var(--border); color: var(--text); }
     button:disabled { opacity: 0.45; cursor: not-allowed; }
 
-    /* أستوديو الفيديو */
     .audio-box {
       background: #080d18; border: 1px dashed var(--border);
       border-radius: 12px; padding: 12px; margin-bottom: 12px;
@@ -152,7 +149,6 @@
       padding: 8px 10px; border-radius: 10px; margin-bottom: 8px; font-size: 13px;
     }
 
-    /* التبويب الرابع: أورانوس اللايف + ذاكرة + صور */
     .voice-stage {
       display: flex; flex-direction: column; align-items: center; gap: 8px;
       background: radial-gradient(circle at center, rgba(245, 158, 11, 0.12), #080d18 72%);
@@ -244,7 +240,7 @@
       <button class="tab-btn" data-tab="hubTab">4. الربط وبدائل بايبال</button>
     </div>
 
-    <!-- التبويب 1: أورانوس لايف + ذاكرة + إرسال واستقبال وتعديل الصور -->
+    <!-- التبويب 1 -->
     <div id="liveVoiceTab" class="tab-panel active">
       <div class="grid grid-2">
         <div class="card">
@@ -257,7 +253,6 @@
             </div>
           </div>
 
-          <!-- معاينة الصورة المرفقة + تعديل/إرسال -->
           <div class="img-preview" id="liveImgPreview">
             <div class="img-preview-head">
               <div style="display:flex; align-items:center; gap:8px;">
@@ -277,7 +272,6 @@
 
           <input type="file" id="liveImgInput" accept="image/*" style="display:none;" />
 
-          <!-- كتابة سريعة بجانب الصوت -->
           <div class="quick-send-row">
             <input id="quickPromptInput" placeholder="اكتب رسالة أو أمر تعديل للصورة هنا..." />
             <button class="gold" id="quickSendBtn">إرسال</button>
@@ -312,7 +306,7 @@
       </div>
     </div>
 
-    <!-- التبويب 2: مهندس أورانوس -->
+    <!-- التبويب 2 -->
     <div id="engineerTab" class="tab-panel">
       <div class="grid grid-2">
         <div class="card">
@@ -342,7 +336,7 @@
       </div>
     </div>
 
-    <!-- التبويب 3: أستوديو الفيديو الطويل والقصائد الصوتية -->
+    <!-- التبويب 3 -->
     <div id="cinemaTab" class="tab-panel">
       <div class="grid grid-2">
         <div class="card">
@@ -404,7 +398,7 @@
       </div>
     </div>
 
-    <!-- التبويب 4: الربط وبدائل بايبال والمنصة الاحتياطية -->
+    <!-- التبويب 4 -->
     <div id="hubTab" class="tab-panel">
       <div class="grid grid-2">
         <div class="card">
@@ -463,12 +457,10 @@
   </div>
 
   <script>
-    // =========================================================
-    // 1. قاعدة بيانات ذاكرة طويلة المدى لأكثر من 3 أشهر (IndexedDB)
-    // =========================================================
+    // 1. قاعدة بيانات ذاكرة طويلة المدى (120 يوماً)
     const DB_NAME = 'oranos_sovereign_db_v1';
     const STORE_NAME = 'long_term_memory';
-    const RETENTION_MS = 120 * 24 * 60 * 60 * 1000; // 120 يوم (أكثر من 3 أشهر)
+    const RETENTION_MS = 120 * 24 * 60 * 60 * 1000;
     let dbInstance = null;
     let liveHistory = [];
 
@@ -548,9 +540,7 @@
       renderLiveHistory();
     }
 
-    // =========================================================
     // 2. التنقل بين التبويبات
-    // =========================================================
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -560,9 +550,7 @@
       });
     });
 
-    // =========================================================
     // 3. مهندس أورانوس
-    // =========================================================
     const engMode = document.getElementById('engMode');
     const engInput = document.getElementById('engInput');
     const runEngineerBtn = document.getElementById('runEngineerBtn');
@@ -613,9 +601,7 @@
       document.querySelector('[data-tab="cinemaTab"]').click();
     });
 
-    // =========================================================
-    // 4. أستوديو الفيديو الطويل والقصائد الصوتية
-    // =========================================================
+    // 4. أستوديو الفيديو
     const audioFileEl = document.getElementById('audioFile');
     const recordBtn = document.getElementById('recordBtn');
     const stopRecBtn = document.getElementById('stopRecBtn');
@@ -853,9 +839,7 @@
       }, totalMs);
     });
 
-    // =========================================================
-    // 5. مركز الربط وبدائل بايبال والمنصة الاحتياطية
-    // =========================================================
+    // 5. مركز الربط وبدائل بايبال
     const apiKeyInput = document.getElementById('apiKeyInput');
     const primaryPaySelect = document.getElementById('primaryPaySelect');
     const backupPaySelect = document.getElementById('backupPaySelect');
@@ -944,9 +928,7 @@
     });
     renderTasks();
 
-    // =========================================================
-    // 6. أورانوس اللايف + ذاكرة 120 يوماً + إرسال واستقبال وتعديل الصور
-    // =========================================================
+    // 6. أورانوس اللايف + ذاكرة 120 يوماً + صور + صوت
     const liveOrb = document.getElementById('liveOrb');
     const liveStatus = document.getElementById('liveStatus');
     const liveChatBox = document.getElementById('liveChatBox');
@@ -1074,26 +1056,30 @@
     // النطق الصوتي الطبيعي
     let arabicVoice = null;
     function loadArabicVoice() {
+      if (!('speechSynthesis' in window)) return;
       const voices = window.speechSynthesis.getVoices();
       arabicVoice =
-        voices.find(v => v.lang.includes('ar') && (v.name.includes('Google') || v.name.includes('Natural'))) ||
-        voices.find(v => v.lang.includes('ar')) ||
+        voices.find(v => v.lang && v.lang.toLowerCase().includes('ar') && (v.name.includes('Google') || v.name.includes('Natural'))) ||
+        voices.find(v => v.lang && v.lang.toLowerCase().includes('ar')) ||
         null;
     }
-    window.speechSynthesis.onvoiceschanged = loadArabicVoice;
-    loadArabicVoice();
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = loadArabicVoice;
+      loadArabicVoice();
+    }
 
     function speakLiveReply(text, doneCb) {
-      if (!('speechSynthesis' in window)) {
+      if (!('speechSynthesis' in window) || !text) {
         if (doneCb) doneCb();
         return;
       }
+      loadArabicVoice();
       window.speechSynthesis.cancel();
       const cleaned = text.replace(/[*#_`~]/g, '');
       const utter = new SpeechSynthesisUtterance(cleaned);
       if (arabicVoice) utter.voice = arabicVoice;
       utter.lang = 'ar-SA';
-      utter.rate = 1.03;
+      utter.rate = 1.02;
 
       utter.onstart = () => {
         liveSpeaking = true;
@@ -1110,7 +1096,16 @@
         liveOrb.className = 'voice-orb';
         if (doneCb) doneCb();
       };
-      window.speechSynthesis.speak(utter);
+
+      setTimeout(() => {
+        try {
+          window.speechSynthesis.speak(utter);
+        } catch (_) {
+          liveSpeaking = false;
+          liveOrb.className = 'voice-orb';
+          if (doneCb) doneCb();
+        }
+      }, 120);
     }
 
     // استدعاء Gemini للنص + الصور + تعديل الصورة
@@ -1118,7 +1113,10 @@
       const apiKey = (localStorage.getItem('oranos_api_key') || apiKeyInput.value || '').trim();
       if (!apiKey) {
         document.querySelector('[data-tab="hubTab"]').click();
-        return 'ضع مفتاح Gemini API في تبويب «الربط وبدائل بايبال» أولاً ثم ارجع هنا.';
+        return {
+          text: 'ضع مفتاح Gemini API في تبويب «الربط وبدائل بايبال» أولاً ثم ارجع هنا.',
+          imageDataUrl: null
+        };
       }
 
       const persona = localStorage.getItem(LIVE_PROFILE_KEY) || liveMemoryProfile.value || '';
@@ -1151,8 +1149,8 @@
       currentParts.push({ text: promptFinal });
       contents.push({ role: 'user', parts: currentParts });
 
-      const modelName = editMode ?  : 'gemini-3.8-flash-image' : 'gemini-3.8-flash'
-      const bodyPayload = editMod
+      const modelName = editMode ? 'gemini-3.8-flash-image' : 'gemini-3.8-flash';
+      const bodyPayload = editMode
         ? {
             contents,
             generationConfig: {
@@ -1183,7 +1181,9 @@
         );
 
         const data = await res.json();
-        if (data.error) return { text: `تنبيه من المفتاح: ${data.error.message}`, imageDataUrl: null };
+        if (data.error) {
+          return { text: `تنبيه من المفتاح: ${data.error.message}`, imageDataUrl: null };
+        }
 
         const parts = data.candidates?.[0]?.content?.parts || [];
         let replyText = '';
@@ -1253,7 +1253,7 @@
       if (e.key === 'Enter') quickSendBtn.click();
     });
 
-    // التعرف الصوتي المستمر بدون انقطاع (مكالمة لايف)
+    // التعرف الصوتي المستمر (مكالمة لايف)
     const LiveSpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
     let liveRecognition = null;
 
@@ -1311,12 +1311,12 @@
       if (liveCallActive) {
         toggleLiveCallBtn.className = 'red';
         toggleLiveCallBtn.textContent = '📴 إنهاء اللايف';
-        window.speechSynthesis.cancel();
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
         try { liveRecognition.start(); } catch (_) {}
       } else {
         toggleLiveCallBtn.className = 'green';
         toggleLiveCallBtn.textContent = '📞 بدء لايف صوتي';
-        window.speechSynthesis.cancel();
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
         try { liveRecognition.stop(); } catch (_) {}
         liveOrb.className = 'voice-orb';
         liveStatus.textContent = 'تم إنهاء اللايف — الذاكرة محفوظة';
@@ -1325,7 +1325,7 @@
 
     liveOrb.addEventListener('click', () => {
       if (!liveRecognition) return;
-      window.speechSynthesis.cancel();
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
       liveSpeaking = false;
       if (!liveCallActive) {
         liveCallActive = true;
@@ -1336,7 +1336,7 @@
     });
 
     stopLiveVoiceBtn.addEventListener('click', () => {
-      window.speechSynthesis.cancel();
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
       liveSpeaking = false;
       liveOrb.className = 'voice-orb';
       liveStatus.textContent = 'تم إيقاف الصوت.';
@@ -1360,4 +1360,3 @@
   </script>
 </body>
 </html>
-
