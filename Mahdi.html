@@ -1,1 +1,317 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ORANOS MAHDI — مركز العروض والدخل بالدولار</title>
+  <style>
+    :root {
+      --bg: #070b12;
+      --panel: #101826;
+      --panel-2: #0b111c;
+      --line: #22324d;
+      --text: #f1f5fb;
+      --muted: #8fa2c2;
+      --gold: #f5b942;
+      --green: #1ea861;
+      --blue: #2f7df6;
+    }
+    * { box-sizing: border-box; font-family: system-ui, -apple-system, sans-serif; }
+    body {
+      margin: 0;
+      padding: 14px;
+      background: radial-gradient(circle at top, #131f34 0%, var(--bg) 60%);
+      color: var(--text);
+    }
+    .app { max-width: 560px; margin: 0 auto; display: grid; gap: 12px; }
+    .box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    h1 { margin: 0; font-size: 16px; color: var(--gold); }
+    .badge {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(30, 168, 97, 0.16);
+      color: #6ee7a8;
+      border: 1px solid rgba(30, 168, 97, 0.35);
+    }
+    p { margin: 6px 0 10px; font-size: 12px; color: var(--muted); line-height: 1.5; }
+    label { display: block; font-size: 12px; color: var(--muted); margin: 8px 0 4px; }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--panel-2);
+      color: var(--text);
+      font-size: 13px;
+    }
+    textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+    button {
+      padding: 10px;
+      border: 0;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .gold { background: var(--gold); color: #111; }
+    .green { background: var(--green); color: #fff; }
+    .blue { background: var(--blue); color: #fff; }
+    .ghost { background: #182336; color: var(--text); border: 1px solid var(--line); }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .stat {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+    }
+    .stat strong { display: block; font-size: 15px; color: var(--gold); }
+    .stat span { font-size: 11px; color: var(--muted); }
+    .lead-item {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px;
+      margin-top: 8px;
+      font-size: 12px;
+    }
+    .lead-head { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+    .note { font-size: 11px; color: var(--gold); margin-top: 8px; min-height: 16px; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="box">
+      <div class="top">
+        <h1>⚡ ORANOS MAHDI — مركز العروض والدخل</h1>
+        <span class="badge">خفيف • مستقل • جاهز للهاتف</span>
+      </div>
+      <p>أداة عملية لتجهيز عروض واضحة بالدولار، إنشاء رسائل إغلاق احترافية، وتتبع الطلبات المحتمَلة والمدفوعة على هاتفك.</p>
+
+      <div class="stats">
+        <div class="stat"><strong id="st-count">0</strong><span>إجمالي العروض</span></div>
+        <div class="stat"><strong id="st-paid">$0</strong><span>مدفوع مؤكد</span></div>
+        <div class="stat"><strong id="st-pipe">$0</strong><span>قيد المتابعة</span></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <div class="grid-2">
+        <div>
+          <label>اسم الزبون / المنصة</label>
+          <input id="clientName" type="text" placeholder="مثال: عميل WhatsApp / منصة" />
+        </div>
+        <div>
+          <label>المبلغ بالدولار ($)</label>
+          <input id="amountUsd" type="number" min="1" step="1" placeholder="25" />
+        </div>
+      </div>
+
+      <label>تفاصيل الخدمة أو العرض</label>
+      <input id="serviceDesc" type="text" placeholder="مثال: تجهيز 5 مشاهد فيديو + نص إعلاني" />
+
+      <div class="grid-2">
+        <div>
+          <label>وسيلة الدفع المعتمدة</label>
+          <select id="payMethod">
+            <option value="Payoneer">Payoneer</option>
+            <option value="Wise">Wise</option>
+            <option value="رابط دفع مباشر">رابط دفع مباشر</option>
+          </select>
+        </div>
+        <div>
+          <label>رابط أو بريد الاستلام</label>
+          <input id="payLink" type="text" placeholder="ضع رابط أو بريد الاستلام" />
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <button class="gold" onclick="buildPitch()">1. تجهيز العرض</button>
+        <button class="blue" onclick="buildFollowup()">2. رسالة متابعة</button>
+        <button class="green" onclick="saveLead('pending')">3. حفظ كطلب</button>
+      </div>
+
+      <label>النص الجاهز للنسخ والإرسال</label>
+      <textarea id="outputText" placeholder="اضغط 'تجهيز العرض' لتوليد رسالة واضحة للزبون..."></textarea>
+
+      <div class="grid-2" style="margin-top:8px;">
+        <button class="green" onclick="copyText()">📋 نسخ النص</button>
+        <button class="ghost" onclick="clearForm()">🧹 تفريغ</button>
+      </div>
+      <div class="note" id="note"></div>
+    </div>
+
+    <div class="box">
+      <div class="top">
+        <h1 style="font-size:14px;">📊 سجل العروض المحفوظة</h1>
+        <button class="ghost" style="padding:6px 10px;" onclick="resetAll()">تصفير السجل</button>
+      </div>
+      <div id="leadsList"></div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = "oranos_mahdi_rev_v1";
+
+    function loadLeads() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveLeads(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+      renderLeads();
+    }
+
+    function getForm() {
+      return {
+        client: document.getElementById("clientName").value.trim() || "عميل محتمل",
+        amount: Number(document.getElementById("amountUsd").value || 0),
+        service: document.getElementById("serviceDesc").value.trim() || "خدمة رقمية مخصصة",
+        method: document.getElementById("payMethod").value,
+        link: document.getElementById("payLink").value.trim() || "[أضف رابط الاستلام هنا]"
+      };
+    }
+
+    function setNote(msg) {
+      document.getElementById("note").textContent = msg;
+    }
+
+    function buildPitch() {
+      const f = getForm();
+      document.getElementById("outputText").value =
+`مرحباً ${f.client}،
+يسعدني تنفيذ طلبك: (${f.service}).
+• التكلفة النهائية: $${f.amount || "—"}
+• مدة التسليم: حسب الاتفاق المباشر
+• طريقة الدفع: ${f.method}
+رابط/بيانات الاستلام: ${f.link}
+
+بمجرد إتمام الدفع وإرسال لقطة التأكيد، أبدأ التنفيذ فوراً.`;
+      setNote("تم تجهيز رسالة العرض بنجاح.");
+    }
+
+    function buildFollowup() {
+      const f = getForm();
+      document.getElementById("outputText").value =
+`مرحباً ${f.client} مجدداً،
+أردت التأكد إن كان العرض الخاص بـ (${f.service}) بقيمة $${f.amount || "—"} مناسباً لك.
+إذا رغبت أن نبدأ اليوم، يمكنك إتمام الدفع عبر ${f.method}:
+${f.link}
+وأنا جاهز للبدء مباشرة.`;
+      setNote("تم تجهيز رسالة المتابعة.");
+    }
+
+    function saveLead(status) {
+      const f = getForm();
+      const list = loadLeads();
+      list.unshift({
+        id: Date.now(),
+        client: f.client,
+        amount: f.amount,
+        service: f.service,
+        method: f.method,
+        status,
+        date: new Date().toLocaleDateString("ar-MA")
+      });
+      saveLeads(list);
+      setNote("تم حفظ العرض في السجل.");
+    }
+
+    function togglePaid(id) {
+      const list = loadLeads().map(item =>
+        item.id === id ? { ...item, status: item.status === "paid" ? "pending" : "paid" } : item
+      );
+      saveLeads(list);
+    }
+
+    function deleteLead(id) {
+      saveLeads(loadLeads().filter(item => item.id !== id));
+    }
+
+    function resetAll() {
+      saveLeads([]);
+      setNote("تم تصفير السجل.");
+    }
+
+    function renderLeads() {
+      const list = loadLeads();
+      const container = document.getElementById("leadsList");
+      const paidSum = list.filter(x => x.status === "paid").reduce((a, b) => a + Number(b.amount || 0), 0);
+      const pipeSum = list.filter(x => x.status !== "paid").reduce((a, b) => a + Number(b.amount || 0), 0);
+
+      document.getElementById("st-count").textContent = list.length;
+      document.getElementById("st-paid").textContent = "$" + paidSum;
+      document.getElementById("st-pipe").textContent = "$" + pipeSum;
+
+      if (!list.length) {
+        container.innerHTML = `<p style="margin-top:8px;">لا توجد عروض محفوظة بعد. ابدأ بتجهيز أول عرض بالأعلى.</p>`;
+        return;
+      }
+
+      container.innerHTML = list.map(item => `
+        <div class="lead-item">
+          <div class="lead-head">
+            <strong>${escapeHtml(item.client)} — $${item.amount}</strong>
+            <span>${item.status === "paid" ? "✅ مدفوع" : "⏳ متابعة"}</span>
+          </div>
+          <div style="color:#b8c7e0;margin-bottom:6px;">${escapeHtml(item.service)} (${escapeHtml(item.method)}) • ${item.date}</div>
+          <div class="grid-2">
+            <button class="green" style="padding:6px;" onclick="togglePaid(${item.id})">
+              ${item.status === "paid" ? "إرجاع لمتابعة" : "تأكيد الدفع"}
+            </button>
+            <button class="ghost" style="padding:6px;" onclick="deleteLead(${item.id})">حذف</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function copyText() {
+      const el = document.getElementById("outputText");
+      if (!el.value.trim()) return;
+      el.select();
+      navigator.clipboard?.writeText(el.value);
+      setNote("تم نسخ النص إلى الحافظة.");
+    }
+
+    function clearForm() {
+      ["clientName", "amountUsd", "serviceDesc", "payLink", "outputText"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
+      setNote("تم تفريغ الحقول.");
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[s]));
+    }
+
+    renderLeads();
+  </script>
+</body>
+</html>
 
